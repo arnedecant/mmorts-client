@@ -1,0 +1,23 @@
+.buildings {
+    position: fixed;
+    bottom: 0;
+    left: 0;
+    width: 100%;
+    background-color: pink;
+}
+
+.buildings ul {
+    display: flex;
+}
+
+.buildings ul li {
+    flex: 1;
+    text-align: center;
+    padding: 1rem 0;
+    cursor: move;
+    cursor: grab;
+}
+
+.buildings ul li:active {
+    cursor: grabbing;
+}

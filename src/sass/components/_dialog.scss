@@ -1,0 +1,33 @@
+dialog {
+    all: unset;
+
+    max-width: 90vw;
+    width: 50rem;
+
+    display: block;
+    position: fixed;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%) scale(.8);
+    opacity: 0;
+    padding: 1em;
+    background: var(--color-default);
+    color: var(--color-secondary);
+    pointer-events: none;
+
+    transition: .3s ease;
+    transition-property: opacity, transform;
+}
+
+dialog[open] {
+    pointer-events: all;
+    opacity: 1;
+    transform: translate(-50%, -50%) scale(1);
+}
+
+dialog header {
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    font-size: 1.2rem;
+}
