@@ -14,10 +14,11 @@
     flex: 1;
     text-align: center;
     padding: 1rem 0;
-    cursor: move;
-    cursor: grab;
+    // cursor: move;
+    // cursor: grab;
+    cursor: pointer;
 }
 
-.buildings ul li:active {
-    cursor: grabbing;
-}
+// .buildings ul li:active {
+//     cursor: grabbing;
+// }

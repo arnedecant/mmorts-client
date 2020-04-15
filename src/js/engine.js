@@ -22,6 +22,10 @@ export default class Engine {
 		window.CLOCK = new THREE.Clock()
 		// window.MOUSE = new THREE.Vector2()
 		window.RAYCASTER = new THREE.Raycaster()
+		window.Vec2 = THREE.Vector2
+		window.Vec3 = THREE.Vector3
+		window.Vec4 = THREE.Vector4
+
 		this.container = container
 
 		if (typeof this.container === 'string') this.container = document.querySelector(this.container)
@@ -128,7 +132,7 @@ export default class Engine {
 
 		// update camera position
 
-		this.camera.position.set(50, 50, 50);
+		this.camera.position.set(20, 20, 20);
 
 		// point camera to center
 
@@ -314,6 +318,16 @@ export default class Engine {
 		if (Array.isArray(path)) loader = this.cubeLoader
 
 		return loader.load(path, fn)
+
+	}
+
+	checkIntersection({ model, targets }) {
+
+		if (!targets || targets.length <= 0) return false
+
+		const intersects = targets.filter((t) => model.box.intersectsBox(t.box))
+
+		return (intersects.length > 0) ? intersects : false
 
 	}
 

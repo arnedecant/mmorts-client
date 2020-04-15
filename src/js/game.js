@@ -6,6 +6,7 @@ import * as THREE from 'three'
 
 // import Keyboard from './controls/keyboard'
 import Building from './models/building'
+import Environment from './models/environment'
 
 // -------------------------------------------------------------------
 
@@ -39,24 +40,7 @@ export default class Game {
         // window.KEYBOARD = new Keyboard()
 
         this.mode = MODES.INITIALISING
-
-        let geometry = new THREE.PlaneBufferGeometry(2000, 2000)
-        let material = new THREE.MeshPhongMaterial({ color: 0x999999, depthWrite: false })
-        this.plane = new THREE.Mesh(geometry, material)
-
-        this.plane.name = 'plane'
-        this.plane.rotation.x = - Math.PI / 2
-        this.plane.receiveShadow = true
-        
-        ENGINE.add(this.plane)
-
-        this.grid = new THREE.GridHelper(30, 30, 0x000000, 0x000000)
-        
-        this.grid.name = 'grid'
-		this.grid.material.transparent = true
-        this.grid.material.opacity = 0.2
-
-        ENGINE.add(this.grid)
+        this.environment = new Environment()
 
         // window.ENVIRONMENT = new Environment()
 
@@ -70,7 +54,12 @@ export default class Game {
         if (e.target.nodeName !== 'CANVAS') return
 
         if (!this._building) return
+
+        const intersects = this.buildings.filter((t) => this._building.box.intersectsBox(t.box))
+        if (intersects.length) return
+
         this._building.state = 'default'
+        this.buildings.push(this._building)
         this._building = null
 
     }
@@ -81,42 +70,20 @@ export default class Game {
 
         for (let intersect of CURSOR.intersects) {
 
-            let plane = ['plane', 'grid', 'helper']
-
-            let isNotPlane = (!plane.includes(intersect.object.name))
-
-            if (isNotPlane && intersect.object != this._building.mesh) console.log(intersect)
-
-            // if (!intersect.face) continue
-
-            // console.log(intersect.face)
-
-            // let pos = this._building.position
-
-            // console.log(intersect.object)
             let { x, y, z } = intersect.point
             let pos = new THREE.Vector3(x, y, z)
-            
-            // console.log(pos)
+
             this._building.position = pos
 
-            // this._building.position.copy(intersect.point).add(intersect.face.normal)
-
         }
-        // this._building.position = { ...CURSOR.position.canvas }
-
-        // this._building.position.copy(intersect.point).add(intersect.face.normal)
-
-        // rollOverMesh.position.copy( intersect.point ).add( intersect.face.normal );
-        // rollOverMesh.position.divideScalar( 100 ).floor().multiplyScalar( 100 ).addScalar( 50 ); // Changed
 
     }
 
     initNewBuilding({ color, size = '1,1,1' }) {
 
         if (typeof size === 'string') {
-            let [w, h, d] = size.split(',')
-            size = { w: parseInt(w), h: parseInt(h), d: parseInt(d) }
+            let [x, y, z] = size.split(',')
+            size = new Vec3(x, y, z)
         }
 
         if (this._building) this._building.destroy()

@@ -21,3 +21,9 @@ export const hcfp = (percent) => {
 	return `#${new THREE.Color().setHSL(safeEval(percent), 0.5, 0.5).getHexString()}`
 
 }
+
+export const overlap = (mesh1, mesh2) => {
+
+	
+
+}
