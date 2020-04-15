@@ -36,7 +36,7 @@ export default class Building {
 
         let { x, y, z } = size
         this.geometry = new THREE.BoxGeometry(x, y, z)
-        this.material = new THREE.MeshPhongMaterial({ color: this._color })
+        this.material = new THREE.MeshLambertMaterial({ color: this._color })
         this.mesh = new THREE.Mesh(this.geometry, this.material)
 
         ENGINE.add(this.mesh)
@@ -105,10 +105,14 @@ export default class Building {
             case 'init':
                 this.material.transparent = true
                 this.material.opacity = 0.5
+                this.mesh.receiveShadow = false
+                this.mesh.castShadow = false
                 ENGINE.controls.enabled = false
                 break
             default:
                 this.material.transparent = false
+                this.mesh.receiveShadow = true
+                this.mesh.castShadow = true
                 ENGINE.controls.enabled = true
                 break
         }

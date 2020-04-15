@@ -17,6 +17,9 @@ export default class Environment {
   	constructor() {
 
         this.mesh = new THREE.Object3D()
+        this.mesh.receiveShadow = true
+        this.mesh.castShadow = true
+
         this.size = 30
         
         this.init()
@@ -25,7 +28,17 @@ export default class Environment {
 
     init() {
 
-        let geometry = new THREE.PlaneBufferGeometry(100, 100)
+        this.initPlane()
+        this.initForest()
+        // this.initMine()
+
+        ENGINE.add(this.mesh)
+
+    }
+
+    initPlane() {
+
+        let geometry = new THREE.PlaneBufferGeometry(100, 100, 100, 100)
         let material = new THREE.MeshPhongMaterial({ color: 0x999999, depthWrite: false })
         this.plane = new THREE.Mesh(geometry, material)
 
@@ -42,6 +55,49 @@ export default class Environment {
         this.grid.material.opacity = 0.2
 
         ENGINE.add(this.grid)
+
+    }
+
+    initForest() {
+
+        this.forest = new THREE.Object3D()
+
+        let geometry, material, mesh
+
+        geometry = new THREE.BoxGeometry(43, 3, 3)
+        material = new THREE.MeshPhongMaterial({ color: 0x107763 })
+
+        mesh = new THREE.Mesh(geometry, material)
+        mesh.position.set(0, 1, -20)
+        this.forest.add(mesh)
+
+        mesh = new THREE.Mesh(geometry, material)
+        mesh.position.set(0, 1, 20)
+        this.forest.add(mesh)
+
+        mesh = new THREE.Mesh(geometry, material)
+        mesh.position.set(-20, 1, 0)
+        mesh.rotation.y = Math.PI / 2
+        this.forest.add(mesh)
+
+        mesh = new THREE.Mesh(geometry, material)
+        mesh.position.set(20, 1, 0)
+        mesh.rotation.y = Math.PI / 2
+        this.forest.add(mesh)
+
+        this.mesh.add(this.forest)
+
+    }
+
+    initMine() {
+
+        let geometry = new THREE.BoxGeometry(6, 6, 6)
+        let material = new THREE.MeshPhongMaterial({ color: 0x222222 })
+
+        this.mine = new THREE.Mesh(geometry, material)
+        this.mine.position.set(-14, 3, -14)
+
+        this.mesh.add(this.mine)
 
     }
 

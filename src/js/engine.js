@@ -156,6 +156,7 @@ export default class Engine {
 		// enable shadowMap
 
 		this.renderer.shadowMap.enabled = true
+		this.renderer.shadowMap.type = THREE.PCFSoftShadowMap // options are THREE.BasicShadowMap | THREE.PCFShadowMap | THREE.PCFSoftShadowMap
 
 		// support for HDPI displays
 
@@ -182,46 +183,33 @@ export default class Engine {
 
 	createLights() {
 
+		// http://jsfiddle.net/wp6E3/4/
+
 		// create a new ambient light
 
 		this.ambientLight = new THREE.AmbientLight(0xffffff)
 
-		// create a new hemisphere light
+		// create a new directional light
 
-		this.hemisphereLight = new THREE.HemisphereLight(0xffffff, 0x444444)
-		this.hemisphereLight.position.set(0, 200, 0)
-
-		// create a new shadow light
-
-		this.directionalLight = new THREE.DirectionalLight(0x707070)
-		this.directionalLight.position.set(0, 200, 100)
-		this.directionalLight.shadow.camera.top = 3000
-		this.directionalLight.shadow.camera.bottom = -3000
-		this.directionalLight.shadow.camera.left = -3000
-		this.directionalLight.shadow.camera.right = 3000
-		this.directionalLight.shadow.mapSize.width = 2048
-		this.directionalLight.shadow.mapSize.height = 2048
-		this.directionalLight.castShadow = true
-
-		// create a new back light
-
-		// this.backLight = new THREE.DirectionalLight(0xffffff, 0.2)
-		// this.backLight.position.set(-100, 200, 50)
-		// this.backLight.castShadow = true
+		this.directionalLight = new THREE.DirectionalLight(0xffffff, 0.5)
+		this.directionalLight.shadow.mapSize.width = 1024
+		this.directionalLight.shadow.mapSize.height = 1024
 
 		// create a new spot light
 
-		// this.spotLight = new THREE.SpotLight(0xffffff, 1, 80, Math.PI * 0.25, 1, 2)
-		// this.spotLight.position.set(0, 40, 0)
+		// this.spotLight = new THREE.SpotLight(0xffeaa7, 1, 80, Math.PI * 0.25, 1, 2)
+		this.spotLight = new THREE.SpotLight(0xffeaa7)
+		this.spotLight.intensity = 0.4
+		this.spotLight.position.set(50, 50, -50)
+		this.spotLight.shadow.mapSize.width = 1024
+		this.spotLight.shadow.mapSize.height = 1024
+		this.spotLight.castShadow = true
 
 		// add lights to the scene
 
 		this.scene.add(this.ambientLight)
-		this.scene.add(this.hemisphereLight)
 		this.scene.add(this.directionalLight)
-		// this.scene.add(this.spotLight)
-		// this.scene.add(this.shadowLight)
-		// this.scene.add(this.backLight)
+		this.scene.add(this.spotLight)
 
 	}
 
