@@ -20,8 +20,8 @@ export default class Engine {
 		this.config = { container, size, background, debug, assetsPath }
 		
 		window.CLOCK = new THREE.Clock()
-		window.MOUSE = new THREE.Vector2()
-		this.raycaster = new THREE.Raycaster()
+		// window.MOUSE = new THREE.Vector2()
+		window.RAYCASTER = new THREE.Raycaster()
 		this.container = container
 
 		if (typeof this.container === 'string') this.container = document.querySelector(this.container)
@@ -48,7 +48,7 @@ export default class Engine {
 
 		window.addEventListener('resize', this.resize.bind(this), false)
 		// window.addEventListener('click', this.click.bind(this), false)
-		window.addEventListener('mousemove', this.mousemove.bind(this), false)
+		// window.addEventListener('mousemove', this.mousemove.bind(this), false)
 		// window.addEventListener('mousedown', this.mousedown.bind(this), false)
 		// window.addEventListener('mouseup', this.mouseup.bind(this), false)
 		// window.addEventListener('mousewheel', this.scroll.bind(this), { passive: true })
@@ -98,6 +98,7 @@ export default class Engine {
 
 		// grid.material.opacity = 0.2
 		// grid.material.transparent = true
+		axes.name = 'helper'
 
 		this.scene.add(axes)
 		// this.scene.add(grid)
@@ -258,7 +259,7 @@ export default class Engine {
 
 	mousemove(e) {
 
-		e.preventDefault()
+		// e.preventDefault()
 
 		// calculate mouse position in normalized device coordinates
 		// (-1 to +1) for both components
@@ -273,7 +274,7 @@ export default class Engine {
 
 	add(mesh) { this.scene.add(mesh) }
 
-	remove(mesh) { 
+	remove(mesh) {
 
 		// if (!(mesh instanceof THREE.Mesh)) return
 
@@ -282,6 +283,7 @@ export default class Engine {
 		mesh.material.dispose()
 		mesh.material = null
 		// try { mesh.dispose() } catch(e) { console.error('Could not dispose of mesh: ', mesh) }
+		this.scene.remove(mesh)
 		mesh = null
 
 	}

@@ -1,3 +1,4 @@
+import Hammer from 'hammerjs'
 import Dispatcher from '../helpers/dispatcher'
 
 // -------------------------------------------------------------------
@@ -13,6 +14,7 @@ export default class Component {
 		this.options = options
 
 		this.onClick = new Dispatcher()
+		this.onDrag = new Dispatcher()
         
 		if (typeof this.element === 'string') this.element = document.querySelector(this.element)
 		
@@ -22,7 +24,10 @@ export default class Component {
 		this.template = document.querySelector(`template[data-name="${ this.element.dataset.component }"]`)
 		if (this.template) this.template = this.template.content.cloneNode(true)
 
-        this.element.addEventListener('click', this.click.bind(this))
+		this.events = new Hammer(this.element)
+		this.events.on('tap', this.click.bind(this))
+		this.events.on('pan', this.pan.bind(this))
+
 
         this.init()
 
@@ -55,6 +60,13 @@ export default class Component {
 	click(e) {
 
 		this.onClick.notify({ component: this, event: e })
+
+	}
+
+	pan(e) {
+
+		
+		this.onDrag.notify({ component: this, event: e })
 
 	}
 

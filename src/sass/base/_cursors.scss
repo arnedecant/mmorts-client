@@ -1,0 +1,19 @@
+body {
+
+    [data-cursor="grab"] {
+        cursor: grab;
+    }
+
+    [data-cursor="grabbing"] {
+        cursor: grabbing;
+    }
+
+    [data-cursor="default"] {
+        cursor: default
+    }
+
+    [data-cursor="pointer"] {
+        cursor: pointer
+    }
+
+}

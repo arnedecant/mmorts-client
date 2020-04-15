@@ -7,6 +7,7 @@ import * as THREE from 'three'
 import Engine from './Engine.js'
 import Modal from './components/modal.js'
 import Interface from './components/interface.js'
+import Cursor from './controls/cursor'
 import Game from './game.js'
 
 // -------------------------------------------------------------------
@@ -27,6 +28,7 @@ class App {
 		window.ENGINE = new Engine({ container: this.$container, assetsPath: 'assets/', debug: this.debug })
 		window.INTERFACE = new Interface('main.interface')
 		window.GAME = new Game()
+		window.CURSOR = new Cursor()
 
 		// properties
 
@@ -34,10 +36,6 @@ class App {
 
 		this.modals = {
 			privacy: new Modal('privacy')
-		}
-
-		this.components = {
-			interface: new Interface('.interface')
 		}
 
 		this.shaders = {
@@ -86,8 +84,6 @@ class App {
 	}
 
 	click(e) {
-
-		
 
 	}
 

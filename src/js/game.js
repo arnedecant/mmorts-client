@@ -4,8 +4,7 @@
 
 import * as THREE from 'three'
 
-import Interface from './components/interface'
-import Keyboard from './controls/keyboard'
+// import Keyboard from './controls/keyboard'
 import Building from './models/building'
 
 // -------------------------------------------------------------------
@@ -26,6 +25,10 @@ export default class Game {
         this.mode = MODES.NONE
 
         this.assets = {}
+        this.buildings = []
+
+        document.body.addEventListener('click', this.click.bind(this))
+        document.body.addEventListener('mousemove', this.mousemove.bind(this))
 
         this.init()
 
@@ -33,27 +36,27 @@ export default class Game {
 
 	init() {
 
-        window.KEYBOARD = new Keyboard()
+        // window.KEYBOARD = new Keyboard()
 
         this.mode = MODES.INITIALISING
 
         let geometry = new THREE.PlaneBufferGeometry(2000, 2000)
         let material = new THREE.MeshPhongMaterial({ color: 0x999999, depthWrite: false })
-        let mesh = new THREE.Mesh(geometry, material)
+        this.plane = new THREE.Mesh(geometry, material)
 
-        mesh.rotation.x = - Math.PI / 2
-        mesh.receiveShadow = true
+        this.plane.name = 'plane'
+        this.plane.rotation.x = - Math.PI / 2
+        this.plane.receiveShadow = true
         
-        ENGINE.add(mesh)
+        ENGINE.add(this.plane)
 
-        let grid = new THREE.GridHelper(2000, 2000, 0x000000, 0x000000)
+        this.grid = new THREE.GridHelper(30, 30, 0x000000, 0x000000)
+        
+        this.grid.name = 'grid'
+		this.grid.material.transparent = true
+        this.grid.material.opacity = 0.2
 
-		grid.material.transparent = true
-        grid.material.opacity = 0.2
-
-        ENGINE.add(grid)
-
-        let test = new Building({})
+        ENGINE.add(this.grid)
 
         // window.ENVIRONMENT = new Environment()
 
@@ -62,13 +65,67 @@ export default class Game {
         
     }
 
-    onEnvironmentLoaded() {
+    click(e) {
 
-        
+        if (e.target.nodeName !== 'CANVAS') return
+
+        if (!this._building) return
+        this._building.state = 'default'
+        this._building = null
 
     }
 
-    click({ action, e }) {
+    mousemove(e) {
+
+        if (!this._building) return
+
+        for (let intersect of CURSOR.intersects) {
+
+            let plane = ['plane', 'grid', 'helper']
+
+            let isNotPlane = (!plane.includes(intersect.object.name))
+
+            if (isNotPlane && intersect.object != this._building.mesh) console.log(intersect)
+
+            // if (!intersect.face) continue
+
+            // console.log(intersect.face)
+
+            // let pos = this._building.position
+
+            // console.log(intersect.object)
+            let { x, y, z } = intersect.point
+            let pos = new THREE.Vector3(x, y, z)
+            
+            // console.log(pos)
+            this._building.position = pos
+
+            // this._building.position.copy(intersect.point).add(intersect.face.normal)
+
+        }
+        // this._building.position = { ...CURSOR.position.canvas }
+
+        // this._building.position.copy(intersect.point).add(intersect.face.normal)
+
+        // rollOverMesh.position.copy( intersect.point ).add( intersect.face.normal );
+        // rollOverMesh.position.divideScalar( 100 ).floor().multiplyScalar( 100 ).addScalar( 50 ); // Changed
+
+    }
+
+    initNewBuilding({ color, size = '1,1,1' }) {
+
+        if (typeof size === 'string') {
+            let [w, h, d] = size.split(',')
+            size = { w: parseInt(w), h: parseInt(h), d: parseInt(d) }
+        }
+
+        if (this._building) this._building.destroy()
+
+        this._building = new Building({ color, size })
+
+    }
+
+    onEnvironmentLoaded() {
 
         
 
