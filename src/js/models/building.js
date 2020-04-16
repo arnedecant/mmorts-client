@@ -25,6 +25,7 @@ export default class Building {
         this._color = color
         this._position = new Vec3(position.x, position.y, position.z)
         this._config = {
+            bounds: { min: -15, max: 15 },
             position: { min: -15, max: 15 }
         }
 
@@ -39,13 +40,12 @@ export default class Building {
         this.material = new THREE.MeshLambertMaterial({ color: this._color })
         this.mesh = new THREE.Mesh(this.geometry, this.material)
 
+        this.geometry.computeBoundingBox()
+        this.box = new THREE.Box3(this.geometry.boundingBox.min, this.geometry.boundingBox.max)
+
         ENGINE.add(this.mesh)
 
-        let { width, height, depth } = this.geometry.parameters
-
         this.state = state
-        this.size = new Vec3(width, height, depth)
-        this.halfsize = new Vec3(width / 2, height / 2, depth / 2)
 
         this.init()
 
@@ -53,10 +53,21 @@ export default class Building {
 
     init() {
 
+        this.setLimits()
+
+    }
+
+    setLimits() {
+
+        this.box.setFromObject(this.mesh)
+
+        let { x, y, z } = this.box.max.sub(this.box.min)
+        this.size = new Vec3(x, y, z)
+        this.halfsize = new Vec3(x / 2, y / 2, z / 2)
+
         this.position = this._position
 
-        let { min, max } = this._config.position
-
+        let { min, max } = this._config.bounds
         min = new Vec3(min, min, min)
         max = new Vec3(max, max, max)
 
@@ -64,8 +75,17 @@ export default class Building {
 
         this._config.position = { min, max }
 
-        this.geometry.computeBoundingBox()
-        this.box = new THREE.Box3(this.geometry.boundingBox.min, this.geometry.boundingBox.max)
+    }
+
+    rotate(direction = 'left') {
+
+        if (direction == 'left') {
+            this.mesh.rotation.y += Math.PI / 2
+        } else {
+            this.mesh.rotation.y -= Math.PI / 2 
+        }  
+        
+        this.setLimits()
 
     }
 

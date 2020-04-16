@@ -30,6 +30,7 @@ export default class Game {
 
         document.body.addEventListener('click', this.click.bind(this))
         document.body.addEventListener('mousemove', this.mousemove.bind(this))
+        document.body.addEventListener('wheel', this.wheel.bind(this))
 
         this.init()
 
@@ -76,6 +77,15 @@ export default class Game {
             this._building.position = pos
 
         }
+
+    }
+
+    wheel(e) {
+
+        let direction = e.deltaY > 0 ? 'right' : 'left'
+        this._building.rotate(direction)
+
+        this.mousemove()
 
     }
 
