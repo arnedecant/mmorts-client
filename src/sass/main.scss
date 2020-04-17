@@ -10,7 +10,7 @@
 // @import "base/_normalize";
 // @import "base/_typography";
 // @import "base/_animations";
-// @import "base/_images";
+@import "base/_images";
 // @import "base/_lists";
 @import "base/_layout";
 @import "base/_app";
@@ -28,6 +28,8 @@
 // @import "components/_dialog";
 @import "components/_navigation";
 @import "components/_header";
+
+@import "views/_village";
 
 // @import "controls/_joystick";
 

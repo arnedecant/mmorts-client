@@ -40,7 +40,8 @@ export default class VillageView extends View {
 
 	click(e) {
 
-		
+		if (!e.target.dataset.building) return
+		GAME.initNewBuilding(e.target.dataset.building)
 
 	}
 

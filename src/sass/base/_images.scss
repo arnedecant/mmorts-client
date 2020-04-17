@@ -1,8 +1,12 @@
-svg.icon {
-    background-color: var(--color-secondary);
-    fill: var(--color-primary);
+svg {
+    max-width: 100%;
+    max-height: 100%;
+}
 
+svg.icon {
     width: 4rem;
     height: 4rem;
+    background-color: var(--color-secondary);
+    fill: var(--color-primary);
     border-radius: var(--border-radius);
 }

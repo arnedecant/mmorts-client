@@ -91,16 +91,20 @@ export default class Game {
 
     }
 
-    initNewBuilding({ color, size = '1,1,1' }) {
-
-        if (typeof size === 'string') {
-            let [x, y, z] = size.split(',')
-            size = new Vec3(x, y, z)
-        }
+    initNewBuilding(name) {
 
         if (this._building) this._building.destroy()
 
-        this._building = new Building({ color, size })
+        const buildings = {
+            castle: { size: new Vec3(9, 9, 9) },
+            house: { size: new Vec3(2, 2, 2) },
+            smith: { size: new Vec3(5, 3, 3) },
+            farm: { size: new Vec3(6, 3, 6) },
+            sawmill: { size: new Vec3(2, 3, 5) },
+            stables: { size: new Vec3(4, 3, 6) }
+        }
+
+        this._building = new Building({ color: '#2d3436', size: buildings[name].size })
 
     }
 
