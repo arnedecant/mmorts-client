@@ -4,11 +4,18 @@
 
 import * as THREE from 'three'
 
-import Engine from './Engine.js'
+import Engine from './engine.js'
 import Modal from './components/modal.js'
-import Interface from './components/interface.js'
-import Cursor from './controls/cursor'
+import Navigation from './components/navigation.js'
+import Router from './helpers/router.js'
+import Cursor from './controls/cursor.js'
 import Game from './game.js'
+
+import GuildView from './views/guild.js'
+import WorldView from './views/world.js'
+import VillageView from './views/village.js'
+import TroopsView from './views/troops.js'
+import GearView from './views/gear.js'
 
 // -------------------------------------------------------------------
 
@@ -26,9 +33,19 @@ class App {
 		// create new engine: setup scene, camera & lighting
 
 		window.ENGINE = new Engine({ container: this.$container, assetsPath: 'assets/', debug: this.debug })
-		window.INTERFACE = new Interface('main.interface')
 		window.GAME = new Game()
 		window.CURSOR = new Cursor()
+
+		window.VIEWS = {
+			guild: new GuildView('#guild'),
+			world: new WorldView('#world'),
+			village: new VillageView('#village'),
+			troops: new TroopsView('#troops'),
+			gear: new GearView('#gear'),
+		}
+
+		window.NAVIGATION = new Navigation('#navigation')
+		window.ROUTER = new Router({ views: VIEWS })
 
 		// properties
 

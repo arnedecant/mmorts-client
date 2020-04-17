@@ -12,7 +12,8 @@
 // @import "base/_animations";
 // @import "base/_images";
 // @import "base/_lists";
-// @import "base/_layout";
+@import "base/_layout";
+@import "base/_app";
 @import "base/_cursors";
 
 // Components
@@ -24,12 +25,9 @@
 // @import "components/_main";
 // @import "components/_section";
 // @import "components/_footer";
-// @import "components/_inventory";
-@import "components/_dialog";
-
-@import "interface/_icons";
-@import "interface/_layout";
-@import "interface/_buildings";
+// @import "components/_dialog";
+@import "components/_navigation";
+@import "components/_header";
 
 // @import "controls/_joystick";
 
@@ -48,25 +46,4 @@ body {
 
 [disabled="hidden"] {
     opacity: 0;
-}
-
-.canvas-wrapper {
-	width: 100%;
-	height: 100%;
-	overflow: hidden;
-	// background: linear-gradient(#e4e0ba, #f7d9aa);
-	// background: #cdf9ff;
-	background: #222;
-}
-
-.btn {
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    background-color: var(--color-secondary);
-    color: var(--color-default);
-    padding: 0.6em 0.8em;
-    // text-transform: uppercase;
-    letter-spacing: 1px;
-    font-weight: 300;
 }

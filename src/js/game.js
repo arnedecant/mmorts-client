@@ -82,6 +82,8 @@ export default class Game {
 
     wheel(e) {
 
+        if (!this._building) return
+
         let direction = e.deltaY > 0 ? 'right' : 'left'
         this._building.rotate(direction)
 

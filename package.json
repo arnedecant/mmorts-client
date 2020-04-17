@@ -6,6 +6,7 @@
 	"license": "MIT",
 	"dependencies": {
 		"hammerjs": "^2.0.8",
+		"navigo": "^7.1.2",
 		"three": "^0.109.0"
 	},
 	"devDependencies": {

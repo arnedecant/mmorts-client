@@ -122,10 +122,24 @@
 </head>
 <body>
 
-	<section id="canvas" class="canvas-wrapper"></section>
+	<div class="app">
+		<header>
+			@@include('./components/header.html')
+		</header>
+		<main class="view-container">
+			<section id="canvas" class="canvas-wrapper"></section>
+			@@include('./views/guild.html')
+			@@include('./views/world.html')
+			@@include('./views/village.html')
+			@@include('./views/troops.html')
+			@@include('./views/gear.html')
+		</main>
+		<footer>
+			@@include('./components/navigation.html')
+		</footer>
+	</div>
 
-	@@include('./components/interface.html')
-	@@include('./modals.html')
+	@@include('./modals/privacy.html')
 	@@include('./icons/icons.html')
 
 	<!-- SHADERS /////////////////////////////////////////////////// -->
