@@ -1,12 +1,18 @@
-.app {
+body[data-race="human"] {
+    --color-primary: #aaaaff;
+}
+
+body[data-race="orc"] {
+    --color-primary: #ff7777;
+}
+
+.app, .interface {
     width: 100%;
     height: 100%;
     display: flex;
     flex-direction: column;
     user-select: none;
 }
-
-// .app, .app * { user-select: none }
 
 .app > header {
     border-bottom: 0.25rem solid var(--color-secondary);
@@ -19,21 +25,10 @@
     border-top: 0.25rem solid var(--color-secondary);
 }
 
-.view-container {
-    position: relative;
-    flex: 1 1 auto;
-}
-
-.view-container > section {
-    position: absolute;
-    top: 0;
-    left: 0;
-    width: 100%;
-    height: 100%;
+.view, .panel, .canvas-wrapper {
     opacity: 0;
     pointer-events: none;
     z-index: -1;
-    background-color: var(--color-default);
 
     &.active {
         opacity: 1;
@@ -46,25 +41,25 @@
         background-color: transparent;
     }
 
-    &.interface > * {
+    &.interface > header,
+    &.interface > footer {
         pointer-events: all;
     }
 }
 
-.interface > header,
-.interface > footer {
+.view, .panel, .canvas-wrapper {
     position: absolute;
-    left: 0;
-    display: flex;
-    width: 100%;
-}
-
-.interface > header {
     top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: var(--color-default);
 }
 
-.interface > footer {
-    bottom: 0;
+.view-container, .panel-container {
+    position: relative;
+    flex: 1 1 auto;
+    pointer-events: none;
 }
 
 .view-container > section.canvas-wrapper {
@@ -75,4 +70,14 @@
 
 canvas {
 	background-color: var(--color-secondary);
+}
+
+.panel {
+    --margin: 1rem;
+    left: var(--margin);
+    top: var(--margin);
+    width: calc(100% - 2 * var(--margin));
+    height: calc(100% - 2 * var(--margin));
+    border-radius: 0.25rem;
+    background-color: green;
 }

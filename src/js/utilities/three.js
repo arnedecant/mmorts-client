@@ -22,8 +22,3 @@ export const hcfp = (percent) => {
 
 }
 
-export const overlap = (mesh1, mesh2) => {
-
-	
-
-}

@@ -19,8 +19,6 @@ export default class Environment {
         this.mesh = new THREE.Object3D()
         this.mesh.receiveShadow = true
         this.mesh.castShadow = true
-
-        this.size = 30
         
         this.init()
 
@@ -48,7 +46,7 @@ export default class Environment {
         
         ENGINE.add(this.plane)
 
-        this.grid = new THREE.GridHelper(this.size, this.size, 0x000000, 0x000000)
+        this.grid = new THREE.GridHelper(GRID_SIZE, GRID_SIZE, 0x000000, 0x000000)
         
         this.grid.name = 'grid'
 		this.grid.material.transparent = true

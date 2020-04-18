@@ -23,6 +23,9 @@ class App {
 
 	constructor() {
 
+		window.GRID_SIZE = 30
+		window.GRID_HALF_SIZE = GRID_SIZE / 2
+
 		this.url = new URL(window.location.href)
 		this.debug = this.url.searchParams.get('debug') || 0
 
@@ -76,6 +79,7 @@ class App {
 
 	setup() {
 
+		document.body.dataset.race = 'orc'
 		this.init()
 
 	}

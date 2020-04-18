@@ -20,13 +20,13 @@ export default class Engine {
 		this.config = { container, size, background, debug, assetsPath }
 		
 		window.CLOCK = new THREE.Clock()
-		// window.MOUSE = new THREE.Vector2()
-		window.RAYCASTER = new THREE.Raycaster()
 		window.Vec2 = THREE.Vector2
 		window.Vec3 = THREE.Vector3
 		window.Vec4 = THREE.Vector4
 
+		window.RAYCASTER = new THREE.Raycaster()
 		this.container = container
+		this.pointer = new Vec2(0, 0)
 
 		if (typeof this.container === 'string') this.container = document.querySelector(this.container)
 
@@ -51,10 +51,6 @@ export default class Engine {
 		// add events
 
 		window.addEventListener('resize', this.resize.bind(this), false)
-		// window.addEventListener('click', this.click.bind(this), false)
-		// window.addEventListener('mousemove', this.mousemove.bind(this), false)
-		// window.addEventListener('mousedown', this.mousedown.bind(this), false)
-		// window.addEventListener('mouseup', this.mouseup.bind(this), false)
 		// window.addEventListener('mousewheel', this.scroll.bind(this), { passive: true })
 
 		// render
@@ -130,13 +126,13 @@ export default class Engine {
 			this.farPlane
 		)
 
-		// update camera position
+		// update camera position point 
+		// it to a specific position (center)
 
-		this.camera.position.set(20, 20, 20);
+		this.camera.position.set(15, 32, 40)
+		this.camera.lookAt(new THREE.Vector3(0, 0, 0))
 
-		// point camera to center
-
-		this.camera.lookAt(new THREE.Vector3(0,0,0))
+		this.camera.updateProjectionMatrix()
 
 	}
 
@@ -165,19 +161,18 @@ export default class Engine {
 		// append to DOM
 
 		this.container.appendChild(this.renderer.domElement)
+		this.canvasRect = this.renderer.domElement.getBoundingClientRect()
 
 		// add controls
 
-		this.controls = new THREE.MapControls(this.camera, this.renderer.domElement)
+		// this.controls = new THREE.MapControls(this.camera, this.renderer.domElement)
 
-		this.controls.enableDamping = true // an animation loop is required when either damping or auto-rotation are enabled
-		this.controls.dampingFactor = 0.05
-		this.controls.screenSpacePanning = false
-		this.controls.minDistance = 20
-		this.controls.maxDistance = 100
-		this.controls.maxPolarAngle = Math.PI / 2
-
-		// this.controls.enabled = false => to disable when interacting...
+		// this.controls.enableDamping = true // an animation loop is required when either damping or auto-rotation are enabled
+		// this.controls.dampingFactor = 0.05
+		// this.controls.screenSpacePanning = false
+		// this.controls.minDistance = 20
+		// this.controls.maxDistance = 50
+		// this.controls.maxPolarAngle = Math.PI / 2
 
 	}
 
@@ -249,20 +244,6 @@ export default class Engine {
 
 	}
 
-	mousemove(e) {
-
-		// e.preventDefault()
-
-		// calculate mouse position in normalized device coordinates
-		// (-1 to +1) for both components
-
-		MOUSE.x = (e.clientX / window.innerWidth) * 2 - 1
-		MOUSE.y = - (e.clientY / window.innerHeight) * 2 + 1
-
-		// console.log({ x: this.mouse.x, y: this.mouse.y })
-
-	}
-
 
 	add(mesh) { this.scene.add(mesh) }
 
@@ -319,9 +300,41 @@ export default class Engine {
 
 	}
 
+	getGridPosition({ x, y }) {
+
+		this.setRaycaster({ x, y })
+		let intersects = []
+
+		try {
+            intersects = RAYCASTER.intersectObjects(ENGINE.scene.children)
+        } catch (e) {}
+        
+        for (let intersect of intersects) {
+            if (intersect.object.name !== 'grid') continue
+            return intersect.point
+        }
+		
+	}
+
+	setRaycaster({ x, y }, windowCoord = false) {
+
+		if (windowCoord) {
+			this.pointer.x = (x / window.innerWidth) * 2 - 1
+			this.pointer.y = - (y / window.innerHeight) * 2 + 1
+		} else {
+			this.pointer.x = ((x - this.canvasRect.left) / this.canvasRect.width) * 2 - 1
+			this.pointer.y = - ((y - this.canvasRect.top) / this.canvasRect.height) * 2 + 1
+		}
+
+		RAYCASTER.setFromCamera(this.pointer, this.camera)
+
+		return this.pointer
+
+	}
+
 	render(dt) {
 
-		if (this.controls) this.controls.update()
+		// if (this.controls && this.controls.enabled) this.controls.update()
 		if (this.stats) this.stats.update()
 
 		// render

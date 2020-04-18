@@ -16,10 +16,11 @@ export default class Building {
     // state = 'active/default', 'progress', 'selected', 'hover', 'wireframe', ...
 
   	constructor({ 
-            position = new Vec3(0, -300, 0), 
+            position = new Vec3(0, 0, 0), 
             size = new Vec3(1, 1, 1), 
             state = 'init', 
-            color = 0x2194ce 
+            color = 0x2194ce,
+            name = 'building'
         }) {
 
         this._color = color
@@ -28,6 +29,8 @@ export default class Building {
             bounds: { min: -15, max: 15 },
             position: { min: -15, max: 15 }
         }
+
+        this.name = name
 
         this.create(state, size)
 
@@ -39,13 +42,18 @@ export default class Building {
         this.geometry = new THREE.BoxGeometry(x, y, z)
         this.material = new THREE.MeshLambertMaterial({ color: this._color })
         this.mesh = new THREE.Mesh(this.geometry, this.material)
+        this.mesh.name = this.name
+        this.mesh.updateMatrixWorld()
 
         this.geometry.computeBoundingBox()
         this.box = new THREE.Box3(this.geometry.boundingBox.min, this.geometry.boundingBox.max)
 
         ENGINE.add(this.mesh)
+        
+        this.setLimits()
 
         this.state = state
+        this.position = new Vec3()
 
         this.init()
 
@@ -53,7 +61,7 @@ export default class Building {
 
     init() {
 
-        this.setLimits()
+        // ...
 
     }
 
@@ -72,6 +80,9 @@ export default class Building {
         max = new Vec3(max, max, max)
 
         max = max.sub(this.size)
+
+        // max = max.sub(this.halfsize)
+        // min = min.add(this.halfsize)
 
         this._config.position = { min, max }
 
@@ -92,7 +103,6 @@ export default class Building {
     destroy() {
 
         ENGINE.remove(this.mesh)
-        // ENGINE.scene.remove(this.mesh)
 
     }
 
@@ -102,6 +112,8 @@ export default class Building {
         // set private variable, round
         // all values, normalize position
         // and update the mesh
+
+        // p.y += this.halfsize.y
 
         this._position = p.round()
         this._position.clamp(this._config.position.min, this._config.position.max)
@@ -113,6 +125,7 @@ export default class Building {
         this.mesh.position.set(x, y, z)
 
         this.box.setFromObject(this.mesh)
+        this.mesh.updateMatrixWorld()
 
     }
 
@@ -127,13 +140,13 @@ export default class Building {
                 this.material.opacity = 0.5
                 this.mesh.receiveShadow = false
                 this.mesh.castShadow = false
-                ENGINE.controls.enabled = false
+                // ENGINE.controls.enabled = false
                 break
             default:
                 this.material.transparent = false
                 this.mesh.receiveShadow = true
                 this.mesh.castShadow = true
-                ENGINE.controls.enabled = true
+                // ENGINE.controls.enabled = true
                 break
         }
 

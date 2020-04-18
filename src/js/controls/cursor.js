@@ -14,11 +14,11 @@ export default class Cursor {
             screen: new THREE.Vector2(0, 0),
             canvas: new THREE.Vector3(0, 0, 0)
         }
-        this.raycaster = new THREE.Raycaster()
 
         document.addEventListener('mousemove', this.mousemove.bind(this))
         document.addEventListener('mousedown', this.mousedown.bind(this))
         document.addEventListener('mouseup', this.mouseup.bind(this))
+		// window.addEventListener('mousewheel', this.scroll.bind(this), { passive: true })
 
     }
 
@@ -42,8 +42,8 @@ export default class Cursor {
 
     mousemove(e) {
 
-        this.position.screen.x = (e.clientX / window.innerWidth) * 2 - 1
-        this.position.screen.y = - (e.clientY / window.innerHeight) * 2 + 1
+        this.clientX = e.clientX
+        this.clientY = e.clientY
 
         window.requestAnimationFrame(this.raycast.bind(this))
 
@@ -51,12 +51,12 @@ export default class Cursor {
 
     raycast() {
 
-        this.raycaster.setFromCamera(this.position.screen, ENGINE.camera)
+        this.position.screen = ENGINE.setRaycaster({ x: this.clientX, y: this.clientY })
 
         try {
-            this.intersects = this.raycaster.intersectObjects(ENGINE.scene.children)
+            this.intersects = RAYCASTER.intersectObjects(ENGINE.scene.children)
         } catch (e) {}
-
+        
         for (let intersect of this.intersects) {
 
             if (intersect.object.name !== 'grid') continue

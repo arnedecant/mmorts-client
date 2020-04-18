@@ -1,4 +1,4 @@
-<section id="village" class="interface">
+<section id="village" class="view interface">
     <header>
         <ul class="resources">
             <li><svg><use xlink:href="#icon-stone"/></svg><span>210</span></li>
@@ -13,6 +13,11 @@
             <li><svg><use xlink:href="#icon-bread"/></svg><span>1250</span></li>
         </ul>
     </header>
+    
+    <div class="panel-container">
+        @@include('./panels/castle.html')
+    </div>
+
     <footer>
         <ul class="buildings">
             <li>
@@ -40,8 +45,8 @@
                 </button>
             </li>
             <li>
-                <button data-building="sawmill" data-color="#2d3436" data-size="2,3,5">
-                    <svg><use xlink:href="#icon-sawmill" /></svg>
+                <button data-building="lumbermill" data-color="#2d3436" data-size="2,3,5">
+                    <svg><use xlink:href="#icon-lumbermill" /></svg>
                     <span>Saw Mill</span>
                 </button>
             </li>
