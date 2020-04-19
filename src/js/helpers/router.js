@@ -44,10 +44,7 @@ export default class Router {
 				this.view.hide()
 				done()
 			},
-			after: (params) => {
-				console.log(params)
-				this.view.show()
-			}
+			after: (params) => this.view.show()
 		})
 
 

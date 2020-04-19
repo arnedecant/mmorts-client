@@ -212,13 +212,17 @@ export default class Engine {
 
 		// set initial width and height
 
-		this.width = this.container === document.body ? window.innerWidth : this.container.offsetWidth
-		this.height = this.container === document.body ? window.innerHeight : this.container.offsetHeight
+		let rect = this.container.getBoundingClientRect()
+		this.width = rect.width
+		this.height = rect.height
+
+		// this.width = this.container === document.body ? window.innerWidth : this.container.offsetWidth
+		// this.height = this.container === document.body ? window.innerHeight : this.container.offsetHeight
 
 		// update according to size multiplier
 
-		this.width *= this.config.size
-		this.height *= this.config.size
+		// this.width *= this.config.size
+		// this.height *= this.config.size
 
 		// set renderer dimensions
 
@@ -303,14 +307,10 @@ export default class Engine {
 	getGridPosition({ x, y }) {
 
 		this.setRaycaster({ x, y })
-		let intersects = []
-
-		try {
-            intersects = RAYCASTER.intersectObjects(ENGINE.scene.children)
-        } catch (e) {}
+		let intersects = RAYCASTER.intersectObjects(ENGINE.scene.children)
         
         for (let intersect of intersects) {
-            if (intersect.object.name !== 'grid') continue
+            if (intersect.object.name !== 'plane') continue
             return intersect.point
         }
 		
@@ -332,9 +332,22 @@ export default class Engine {
 
 	}
 
+	raycast(pointer, models = []) {
+
+		// NOTE: difference .intersectsBox() and .intersectBox()
+		// .intersectsBox() - returns true or false
+		// .intersectBox()  - returns vec3 or false
+
+		this.setRaycaster(pointer)
+
+		if (!Array.isArray(models)) models = [models]
+		return models.find((m) => RAYCASTER.ray.intersectsBox(m.box))
+
+	}
+
 	render(dt) {
 
-		// if (this.controls && this.controls.enabled) this.controls.update()
+		if (this.controls) this.controls.update()
 		if (this.stats) this.stats.update()
 
 		// render

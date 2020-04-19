@@ -3,6 +3,8 @@
 // ---------------------------------------------------------------
 // https://threejs.org/docs/#api/en/math/Box3
 // https://stackoverflow.com/questions/15492857/any-way-to-get-a-bounding-box-from-a-three-js-object3d
+// https://threejs.org/examples/#webgl_geometry_spline_editor 
+// https://github.com/mrdoob/three.js/blob/master/examples/webgl_geometry_spline_editor.html
 
 import * as THREE from 'three'
 
@@ -73,7 +75,7 @@ export default class Building {
         this.size = new Vec3(x, y, z)
         this.halfsize = new Vec3(x / 2, y / 2, z / 2)
 
-        this.position = this._position
+        // this.position = this._position
 
         let { min, max } = this._config.bounds
         min = new Vec3(min, min, min)
@@ -102,6 +104,8 @@ export default class Building {
 
     destroy() {
 
+        console.log('destroying...', this)
+
         ENGINE.remove(this.mesh)
 
     }
@@ -113,19 +117,16 @@ export default class Building {
         // all values, normalize position
         // and update the mesh
 
-        // p.y += this.halfsize.y
-
         this._position = p.round()
         this._position.clamp(this._config.position.min, this._config.position.max)
         this._position = this._position.add(this.halfsize)
 
-        if (!this._position.x) return
+        // let { x, y, z } = this._position
+        this.mesh.position.copy(p)
 
-        let { x, y, z } = this._position
-        this.mesh.position.set(x, y, z)
-
-        this.box.setFromObject(this.mesh)
         this.mesh.updateMatrixWorld()
+        this.box.setFromObject(this.mesh)
+        // this.box.applyMatrix4()
 
     }
 

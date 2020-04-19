@@ -11,10 +11,19 @@ export default class Cursor {
         this.isMoving = false
         this.velocity = 0
         this.position = {
-            screen: new THREE.Vector2(0, 0),
-            canvas: new THREE.Vector3(0, 0, 0)
+            screen: new Vec2(),
+            canvas: new Vec3()
+        }
+        this.lastPosition = {
+            screen: new Vec2(),
+            canvas: new Vec3()
+        }
+        this.distance = {
+            screen: new Vec2(),
+            canvas: new Vec3()
         }
 
+    
         document.addEventListener('mousemove', this.mousemove.bind(this))
         document.addEventListener('mousedown', this.mousedown.bind(this))
         document.addEventListener('mouseup', this.mouseup.bind(this))

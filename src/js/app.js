@@ -8,7 +8,6 @@ import Engine from './engine.js'
 import Modal from './components/modal.js'
 import Navigation from './components/navigation.js'
 import Router from './helpers/router.js'
-import Cursor from './controls/cursor.js'
 import Game from './game.js'
 
 import GuildView from './views/guild.js'
@@ -37,7 +36,6 @@ class App {
 
 		window.ENGINE = new Engine({ container: this.$container, assetsPath: 'assets/', debug: this.debug })
 		window.GAME = new Game()
-		window.CURSOR = new Cursor()
 
 		window.VIEWS = {
 			guild: new GuildView('#guild'),
