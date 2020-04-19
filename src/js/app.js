@@ -77,7 +77,7 @@ class App {
 
 	setup() {
 
-		document.body.dataset.race = 'orc'
+		// document.body.dataset.race = 'orc'
 		this.init()
 
 	}

@@ -19,11 +19,12 @@
     </div>
 
     <footer>
-        <div class="building-placement helper">
+        <div class="helper" data-helper="building-placement">
+            <div class="building"></div>
             <button name="cancel"><svg><use xlink:href="#icon-cancel" /></svg></button>
             <button name="confirm"><svg><use xlink:href="#icon-confirm" /></svg></button>
         </div>
-        <ul class="buildings helper">
+        <ul class="buildings helper active" data-helper="building-selection">
             <li>
                 <button data-building="castle" data-color="#2d3436" data-size="9,9,9">
                     <svg><use xlink:href="#icon-castle" /></svg>

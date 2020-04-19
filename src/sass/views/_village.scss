@@ -52,4 +52,44 @@
         margin-right: 0.25rem;
     }
 
+    [data-helper="building-placement"] {
+        display: flex;
+        padding: 0.5rem 0.5rem 0.25rem 0.5rem;
+
+        .building, .building svg {
+            display: flex;
+            align-items: flex-end;
+        }
+
+        .building span {
+            display: block;
+            font-size: 1.5rem;
+            margin-left: 0.5rem;
+            letter-spacing: 1px;
+            text-transform: uppercase;
+            font-weight: 300;
+            line-height: 1;
+        }
+
+        .building + button {
+            margin-left: auto; 
+            margin-right: 0.5rem;
+        }
+
+        button {
+            font-size: 0;
+        }
+
+        svg {
+            height: 3rem;
+            width: 3rem;
+            font-size: 0;
+
+            use {
+                align-self: flex-end;
+                vertical-align: bottom;
+            }
+        }
+    }
+
 }

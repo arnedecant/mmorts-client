@@ -5,6 +5,7 @@
 import Hammer from 'hammerjs'
 import View from './../base/view.js'
 import Building from './../models/building.js'
+import Helper from '../base/helper.js'
 
 export default class VillageView extends View {
 
@@ -16,11 +17,6 @@ export default class VillageView extends View {
 
 		super(selector)
 
-		// elements
-
-		this.$buildings = this.element.querySelector('ul.buildings')
-		this.$addBuilding = this.element.querySelector('div.building-placement')
-
 		// Private properties
 
 		this._newBuilding = null
@@ -29,6 +25,11 @@ export default class VillageView extends View {
 		// Public properties
 
 		this.buildings = []
+
+		this.helpers = {
+			buildingSelection: new Helper('[data-helper="building-selection"]'),
+			buildingPlacement: new Helper('[data-helper="building-placement"]', [{ key: '$building', selector: '.building' }]),
+		}
 
 		// Bind interface events
 
@@ -62,16 +63,39 @@ export default class VillageView extends View {
 
 	onTapInterface(e) {
 
-		if (e.target.name == 'confirm') {
-			this.addBuilding(this._newBuilding)
-		} else if (e.target.name == 'cancel') {
-			this._newBuilding.destroy()
-			this._intersected = null
-			this._newBuilding = null
-		}
+		let building = e.target.dataset.building
 
-		if (!e.target.dataset.building) return
-		this.addBuilding(e.target.dataset.building, 'init')
+		if (building) {
+
+			this.helpers.buildingPlacement.show()
+			this.helpers.buildingSelection.hide()
+
+			// preserveAspectRatio="xMidYMin meet" not working ?? => should be placed in icons.html? 
+
+			this.helpers.buildingPlacement.$building.innerHTML = `
+				<svg preserveAspectRatio="xMidYMin meet"><use xlink:href="#icon-${ building }" /></svg>
+				<span>${ building }</span>
+			`
+
+			this.addBuilding(building, 'init')
+
+		} else {
+
+			this.helpers.buildingPlacement.hide()
+			this.helpers.buildingSelection.show()
+
+			if (e.target.name == 'confirm') {
+
+				this.addBuilding(this._newBuilding)
+
+			} else if (e.target.name == 'cancel') {
+
+				this._newBuilding.destroy()
+				this._intersected = null
+				this._newBuilding = null
+
+			}
+		}
 
 	}
 
