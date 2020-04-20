@@ -4,6 +4,7 @@
 // -------------------------------------------------------------------
 
 import Component from './component.js'
+import Manager from './manager.js'
 
 export default class Panel extends Component {
 
@@ -16,6 +17,8 @@ export default class Panel extends Component {
 		super(selector)
 
 		this.element.classList.add('panel')
+
+		this.manager = new Manager(this.element.querySelector('[data-manager]'))
         
 		// Bind events
 
@@ -48,9 +51,12 @@ export default class Panel extends Component {
 	// :: DISPLAY METHODS
 	// ---------------------------------------------------------------
 
-  	show() {
+  	show(building) {
 
-        super.show()
+		super.show()
+
+		this.manager.building = building
+		this.manager.show()
 		ENGINE.controls.enabled = false
 
 	}

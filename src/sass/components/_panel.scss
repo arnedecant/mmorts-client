@@ -5,5 +5,17 @@
     width: calc(100% - 2 * var(--margin));
     height: calc(100% - 2 * var(--margin));
     border-radius: 0.25rem;
-    background-color: green;
+    display: flex;
+    flex-direction: column;
+    box-shadow: 0 0 0.5rem 0rem rgba(var(--rgb-secondary), 0.25);
+    background-color: var(--color-primary--light);
+    background-image: var(--pattern-paper);
+}
+
+.panel footer {
+    margin-top: auto;
+}
+
+.panel footer button[name="close"] {
+    margin-left: auto;
 }

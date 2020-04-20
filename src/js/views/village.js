@@ -83,7 +83,7 @@ export default class VillageView extends View {
 			building = ENGINE.raycast(e.center, this.buildings)
 			if (!building) return
 			
-			this.panels[building.name].show()
+			this.panels[building.name].show(building)
 			Object.keys(this.helpers).forEach((key) => this.helpers[key].hide())
 
 		} else {
@@ -173,8 +173,6 @@ export default class VillageView extends View {
 
 			const intersects = this.buildings.filter((b) => this._newBuilding.box.intersectsBox(b.box))
 			if (intersects.length) return
-
-			console.log(this._newBuilding)
 
 			this._newBuilding.state = 'default'
 			this.buildings.push(this._newBuilding)

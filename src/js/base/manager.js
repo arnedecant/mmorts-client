@@ -12,17 +12,17 @@ export default class Manager extends Component {
 	// :: CONSTRUCTOR
 	// ---------------------------------------------------------------
 
-	constructor(selector, building) {
+	constructor(element, building) {
 
-		super(selector)
+		super(element)
 
 		this.element.classList.add('manager')
 
 		this.onLevelUp = new Dispatcher()
-		
-		this.building = building
 
-		if (!this.building.description) this.building.description = 'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Aliquam tempor consequat dictum. Donec quis est vitae mauris fringilla imperdiet quis eu libero. Fusce placerat purus purus, non auctor est egestas nec.'
+		this._building = null
+
+		// if (!this.building.description) this.building.description = 'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Aliquam tempor consequat dictum. Donec quis est vitae mauris fringilla imperdiet quis eu libero. Fusce placerat purus purus, non auctor est egestas nec.'
 
 	}
 
@@ -30,15 +30,17 @@ export default class Manager extends Component {
 
 		super.click(e)
 
-		
-
 	}
 
 	render() {
 
+		super.render()
+
+		if (!this.building) return
+
 		this.element.innerHTML = `
 			<div class="img-container">
-				<svg><use xlink:href="#${ this.building.name }" /></svg>
+				<svg><use xlink:href="#icon-${ this.building.name }" /></svg>
 				<span class="level">${ this.building.level }</span>
 			</div>
 			<div class="summary">
@@ -47,6 +49,14 @@ export default class Manager extends Component {
 			</div>
 		`
 
+	}
+
+	get building() { return this._building }
+	set building(building) {
+
+		this._building = building
+		this.render()
+		
 	}
 	
 

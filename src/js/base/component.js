@@ -11,18 +11,15 @@ export default class Component {
 	// :: CONSTRUCTOR
 	// -------------------------------------------------------------------
 
-	constructor(selector, options = {}) {
+	constructor(element, options = {}) {
 
-        this.selector = selector
-		this.element = selector
+		this.element = element
 		this.options = options
 
 		this._enabled = true
 		this._hasRendered = false
         
 		if (typeof this.element === 'string') this.element = document.querySelector(this.element)
-		if (!this.element && selector !== null) console.warn(`No element found for selector: ${ selector }`)
-		if (!this.element) return
 
 		this.element.classList.add('component')
 

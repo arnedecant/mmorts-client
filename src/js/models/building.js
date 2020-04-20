@@ -106,8 +106,6 @@ export default class Building {
 
     destroy() {
 
-        console.log('destroying...', this)
-
         ENGINE.remove(this.mesh)
 
     }

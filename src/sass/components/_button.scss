@@ -47,3 +47,17 @@ button[name="cancel"] svg {
 button[name="confirm"] svg {
     fill: green;
 }
+
+.btn-sq {
+    width: 4rem;
+    height: 4rem;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background-color: var(--color-secondary);
+    border-radius: 0.25rem;
+
+    svg {
+        background-color: transparent;
+    }
+}

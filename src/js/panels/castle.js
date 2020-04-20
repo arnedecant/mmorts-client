@@ -11,25 +11,11 @@ export default class CastlePanel extends Panel {
 
 		super(selector)
 
-		this.$manager = this.element.querySelector('.building-manager')
-
 	}
 
 	init() {
 
 		this.setup()
-
-	}
-
-	setup() {
-
-		let html = ''
-
-		html = `
-			
-		`
-
-		this.$manager.innerHTML = html
 
 	}
 
