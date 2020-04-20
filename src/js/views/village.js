@@ -1,12 +1,18 @@
 // ---------------------------------------------------------------
-// :: UNIT
+// :: VILLAGE VIEW
 // ---------------------------------------------------------------
 
 import Hammer from 'hammerjs'
 import View from './../base/view.js'
 import Building from './../models/building.js'
 import Helper from '../base/helper.js'
+
 import CastlePanel from '../panels/castle.js'
+import HousePanel from '../panels/house.js'
+import SmithPanel from '../panels/smith.js'
+import LumbermillPanel from '../panels/lumbermill.js'
+import FarmPanel from '../panels/farm.js'
+import StablesPanel from '../panels/stables.js'
 
 export default class VillageView extends View {
 
@@ -34,19 +40,19 @@ export default class VillageView extends View {
 
 		this.panels = {
 			castle: new CastlePanel('[data-panel="castle"]'),
+			house: new HousePanel('[data-panel="house"]'),
+			smith: new SmithPanel('[data-panel="smith"]'),
+			farm: new FarmPanel('[data-panel="farm"]'),
+			lumbermill: new LumbermillPanel('[data-panel="lumbermill"]'),
+			stables: new StablesPanel('[data-panel="stables"]')
 		}
-
-		// Bind interface events
-
-		this.events = new Hammer(this.element)
-		this.events.on('tap', this.onTapInterface.bind(this))
 
 		// Bind game events
 
-		GAME.events.on('tap', this.onTapCanvas.bind(this))
-        GAME.events.on('pan', this.onPanCanvas.bind(this))
-        GAME.events.on('panstart', this.onPanstartCanvas.bind(this))
-		GAME.events.on('panend', this.onPanendCanvas.bind(this))
+		GAME.events.on('tap', this.click.bind(this))
+        GAME.events.on('pan', this.pan.bind(this))
+        GAME.events.on('panstart', this.panstart.bind(this))
+		GAME.events.on('panend', this.panend.bind(this))
 		
 		// Init
 
@@ -57,19 +63,9 @@ export default class VillageView extends View {
 	init() {
 
 		this.addBuilding('castle', 'init')
+		
 		this.helpers.buildingPlacement.show()
 		this.helpers.buildingSelection.hide()
-
-	}
-
-
-	// ---------------------------------------------------------------
-	// :: RENDER LOOPS
-	// ---------------------------------------------------------------
-
-	render(data) {
-
-		
 
 	}
 
@@ -78,57 +74,57 @@ export default class VillageView extends View {
 	// :: EVENT-HANDLERS
 	// ---------------------------------------------------------------
 
-	onTapInterface(e) {
+	click(e) {
 
-		let building = e.target.dataset.building
+		if (e.target.nodeName === 'CANVAS') {
 
-		if (building) {
+			let building, panel
 
-			this.addBuilding(building, 'init')
+			building = ENGINE.raycast(e.center, this.buildings)
+			if (!building) return
+			
+			this.panels[building.name].show()
+			Object.keys(this.helpers).forEach((key) => this.helpers[key].hide())
 
 		} else {
 
-			if (e.target.name == 'confirm') {
+			let building = e.target.dataset.building
 
-				this.addBuilding(this._newBuilding)
+			if (building) {
 
-			} else if (e.target.name == 'cancel') {
+				this.addBuilding(building, 'init')
 
-				this._newBuilding.destroy()
-				this._intersected = null
-				this._newBuilding = null
+			} else {
 
+				if (e.target.name == 'confirm') {
+
+					this.addBuilding(this._newBuilding)
+
+				} else if (e.target.name == 'cancel') {
+
+					this._newBuilding.destroy()
+					this._intersected = null
+					this._newBuilding = null
+
+				}
 			}
+
 		}
 
 	}
 
-	onTapCanvas(e) {
-
-		let building, panel
-
-		building = ENGINE.raycast(e.center, this.buildings)
-		if (building) panel = this.panels[building.name]
-
-		if (panel) {
-			panel.show()
-			Object.keys(this.helpers).forEach((key) => this.helpers[key].hide())
-		}
-
-	}
-
-	onPanstartCanvas(e) {
+	panstart(e) {
 
 		if (!this._newBuilding) return
 		this._intersected = ENGINE.raycast(e.center, this._newBuilding)
 
     }
 
-    onPanendCanvas(e) {
+    panend(e) {
 
     }
 
-    onPanCanvas(e) {
+    pan(e) {
 
         window.requestAnimationFrame(() => this.moveBuilding(e.center))
 

@@ -1,0 +1,16 @@
+.helper {
+    height: auto;
+    transition-property: opacity, transform;
+    background-color: var(--color-secondary);
+    color: var(--color-primary);
+    fill: var(--color-primary);
+    border-top: .25rem solid var(--color-primary);
+
+    &.active {
+        transform: translateY(-100%);
+    }
+}
+
+.helper:not(.active) button {
+    pointer-events: none;
+}

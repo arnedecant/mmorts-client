@@ -1,12 +1,12 @@
-#village {
+[data-view="village"] {
 
-    header, footer {
+    & > header, & > footer {
         background-color: var(--color-secondary);
         color: var(--color-primary);
         fill: var(--color-primary);
     }
 
-    header {
+    & > header {
         border-bottom: .25rem solid var(--color-primary);
         display: flex;
         font-size: 0.8rem;
@@ -14,7 +14,7 @@
         padding: 0.25rem 0.25rem 0.5rem 0.25rem;
     }
 
-    footer {
+    & > footer {
         border-top: .25rem solid var(--color-primary);
     }
 

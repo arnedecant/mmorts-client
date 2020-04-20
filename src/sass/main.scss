@@ -7,45 +7,23 @@
 // Base
 
 @import "base/_reset";
-// @import "base/_normalize";
-// @import "base/_typography";
-// @import "base/_animations";
-@import "base/_images";
-// @import "base/_lists";
+@import "base/_image";
 @import "base/_layout";
-@import "base/_app";
-@import "base/_cursors";
 
 // Components
 
+@import "components/_component";
 @import "components/_button";
-// @import "components/_image";
-// @import "components/_navigation";
-// @import "components/_header";
-// @import "components/_main";
-// @import "components/_section";
-// @import "components/_footer";
-// @import "components/_dialog";
 @import "components/_navigation";
 @import "components/_header";
+@import "components/_navigation";
+@import "components/_header";
+@import "components/_view";
+@import "components/_panel";
+@import "components/_manager";
+@import "components/_helper";
+
+// Views
 
 @import "views/_village";
 
-// @import "controls/_joystick";
-
-body {
-    font-family: -apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,Oxygen-Sans,Ubuntu,Cantarell,"Helvetica Neue",sans-serif;
-    background-color: var(--color-secondary);
-	width: 100%;
-	height: 100vh;
-	overflow: hidden;
-}
-
-[disabled] {
-    pointer-events:none;
-    opacity: 0.5;
-}
-
-[disabled="hidden"] {
-    opacity: 0;
-}

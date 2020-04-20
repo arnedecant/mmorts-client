@@ -22,11 +22,13 @@ export default class Building {
             size = new Vec3(1, 1, 1), 
             state = 'init', 
             color = 0x2194ce,
-            name = 'building'
+            name = 'building',
+            level = 0
         }) {
 
         this._color = color
         this._position = new Vec3(position.x, position.y, position.z)
+        this._level = level
         this._config = {
             bounds: { min: -15, max: 15 },
             position: { min: -15, max: 15 }
@@ -150,6 +152,17 @@ export default class Building {
                 // ENGINE.controls.enabled = true
                 break
         }
+
+    }
+
+    get level() { return this._level }
+    set level(lvl) {
+
+        this._level = lvl
+
+        // TODO: depending on level:
+        // - change model
+        // - start construction animation
 
     }
 

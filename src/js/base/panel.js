@@ -3,39 +3,23 @@
 // :: BASE VIEW
 // -------------------------------------------------------------------
 
-import View from './view.js'
-import EventDispatcher from './../helpers/dispatcher.js'
+import Component from './component.js'
 
-export default class Panel {
+export default class Panel extends Component {
 
 	// ---------------------------------------------------------------
 	// :: CONSTRUCTOR
 	// ---------------------------------------------------------------
 
 	constructor(selector) {
+		
+		super(selector)
 
-		this.selector = selector
-        this.element = document.querySelector(selector)
-        this._hasRendered = false
+		this.element.classList.add('panel')
         
 		// Bind events
 
-		this.events = new Hammer(this.element)
-		this.events.on('tap', this.click.bind(this))
-
 		KEYBOARD.onKeyUp.addListener(this.keyup.bind(this))
-
-	}
-	
-	
-	
-	// ---------------------------------------------------------------
-	// :: RENDER
-	// ---------------------------------------------------------------
-
-	render() {
-        
-        this._hasRendered = true
 
 	}
 
@@ -66,29 +50,16 @@ export default class Panel {
 
   	show() {
 
-        if (!this._hasRendered) this.render()
-		this.element.classList.add('active')
+        super.show()
 		ENGINE.controls.enabled = false
 
 	}
 
 	hide() {
 
-		this.element.classList.remove('active')
+		super.hide()
 		ENGINE.controls.enabled = true
 
     }
-
-    
-
-	// ---------------------------------------------------------------
-	// :: UTILITIES
-	// ---------------------------------------------------------------
-
-  	isActive() {
-
-        return [...this.element.classList].includes('active')
-
-	}
 
 }

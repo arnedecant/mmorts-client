@@ -4,71 +4,51 @@
 // -------------------------------------------------------------------
 
 import Dispatcher from './../helpers/dispatcher.js'
+import Component from './component.js'
 
-export default class Manager {
+export default class Manager extends Component {
 
 	// ---------------------------------------------------------------
 	// :: CONSTRUCTOR
 	// ---------------------------------------------------------------
 
-	constructor(selector, builing) {
+	constructor(selector, building) {
 
-		this.selector = selector
-        this.element = document.querySelector(selector)
-        this._hasRendered = false
+		super(selector)
 
-        // Set dispatchers
+		this.element.classList.add('manager')
 
-        this.onClick = new Dispatcher()
-        
-		// Bind events
+		this.onLevelUp = new Dispatcher()
+		
+		this.building = building
 
-		this.events = new Hammer(this.element)
-		this.events.on('tap', (e) => this.onClick.notify(e))
+		if (!this.building.description) this.building.description = 'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Aliquam tempor consequat dictum. Donec quis est vitae mauris fringilla imperdiet quis eu libero. Fusce placerat purus purus, non auctor est egestas nec.'
 
-    }
+	}
 
+	click(e) {
 
+		super.click(e)
 
-    // ---------------------------------------------------------------
-	// :: RENDER
-	// ---------------------------------------------------------------
+		
+
+	}
 
 	render() {
-        
-        this._hasRendered = true
+
+		this.element.innerHTML = `
+			<div class="img-container">
+				<svg><use xlink:href="#${ this.building.name }" /></svg>
+				<span class="level">${ this.building.level }</span>
+			</div>
+			<div class="summary">
+				<h1>${ this.building.name }</h1>
+				<p>${ this.building.description }</p>
+			</div>
+		`
 
 	}
+	
 
-
-
-	// ---------------------------------------------------------------
-	// :: DISPLAY METHODS
-	// ---------------------------------------------------------------
-
-  	show() {
-
-        if (!this._hasRendered) this.render()
-		this.element.classList.add('active')
-
-	}
-
-	hide() {
-
-        this.element.classList.remove('active')
-
-    }
-
-    
-
-	// ---------------------------------------------------------------
-	// :: UTILITIES
-	// ---------------------------------------------------------------
-
-  	isActive() {
-
-        return [...this.element.classList].includes('active')
-
-	}
 
 }

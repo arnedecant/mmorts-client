@@ -2,80 +2,143 @@ import Hammer from 'hammerjs'
 import Dispatcher from '../helpers/dispatcher'
 
 // -------------------------------------------------------------------
-// :: Component
+// :: COMPONENT
 // -------------------------------------------------------------------
 
 export default class Component {
 
-	constructor(selector = null, options = {}) {
+	// -------------------------------------------------------------------
+	// :: CONSTRUCTOR
+	// -------------------------------------------------------------------
+
+	constructor(selector, options = {}) {
 
         this.selector = selector
 		this.element = selector
 		this.options = options
 
-		this.onClick = new Dispatcher()
-		this.onDrag = new Dispatcher()
+		this._enabled = true
+		this._hasRendered = false
         
 		if (typeof this.element === 'string') this.element = document.querySelector(this.element)
-		
 		if (!this.element && selector !== null) console.warn(`No element found for selector: ${ selector }`)
 		if (!this.element) return
-		
-		this.template = document.querySelector(`template[data-name="${ this.element.dataset.component }"]`)
-		if (this.template) this.template = this.template.content.cloneNode(true)
+
+		this.element.classList.add('component')
+
+		// Events dispatchers
+
+		this.onClick = new Dispatcher()
+		this.onNavigate = new Dispatcher(this)
+
+		// Event listeners
 
 		this.events = new Hammer(this.element)
 		this.events.on('tap', this.click.bind(this))
-		this.events.on('pan', this.pan.bind(this))
 
+		// Setup
 
-        this.init()
+        // if (this.options.render === undefined) this.options.render = true
+		// if (this.options.render) this.render()
+
+	}
+
+	setup() {
+
+		
 
 	}
 
 	init() {
 
-		
+
 
 	}
-    
-    enable() {
 
-        this.element.removeAttribute('disabled')
 
-    }
 
-    disable() {
+	// -------------------------------------------------------------------
+	// :: TEMPLATE
+	// -------------------------------------------------------------------
 
-        this.element.setAttribute('disabled', 'disabled')
+	render() {
 
-    }
+		this._hasRendered = true 
 
-    hide() {
+	}
 
-        this.element.setAttribute('disabled', 'disabled')
 
-    }
+
+	// -------------------------------------------------------------------
+	// :: EVENTS
+	// -------------------------------------------------------------------
 
 	click(e) {
 
-		this.onClick.notify({ component: this, event: e })
+		this.onClick.notify(e)
 
 	}
 
-	pan(e) {
 
-		
-		this.onDrag.notify({ component: this, event: e })
+
+	// -------------------------------------------------------------------
+	// :: HELPERS
+	// -------------------------------------------------------------------
+    
+    enable() {
+
+		this.element.removeAttribute('disabled')
+		this._enabled = true
+
+    }
+
+    disable(value = 'disabled') {
+
+		this.element.setAttribute('disabled', value)
+		this._enabled = false
+
+    }
+	
+	show() {
+
+		if (!this._hasRendered) this.render()
+		this.element.classList.add('active')
+		this.enable()
 
 	}
 
-	render(timestamp) {
+    hide() {
 
-		// add self to the requestAnimationFrame
-
-		window.requestAnimationFrame(this.render.bind(this))
+		this.element.classList.remove('active')
+		this.disable('hidden')
 
 	}
+
+	isActive() {
+
+		return [...this.element.classList].contains('active')
+
+	}
+
+
+
+	// -------------------------------------------------------------------
+	// :: GETTERS & SETTERS
+	// -------------------------------------------------------------------
+
+	get enabled() {
+
+		return this._enabled
+
+	}
+
+	set enabled(bool) {
+
+		if (bool) this.enable()
+		else this.disable()
+
+	}
+
+
 
 }

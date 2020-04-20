@@ -3,9 +3,9 @@
 // :: BASE VIEW
 // -------------------------------------------------------------------
 
-import EventDispatcher from './../helpers/dispatcher.js'
+import Component from './component.js'
 
-export default class View {
+export default class View extends Component {
 
 	// ---------------------------------------------------------------
 	// :: CONSTRUCTOR
@@ -13,27 +13,16 @@ export default class View {
 
 	constructor(selector, name) {
 
-		this.selector = selector
-        this.element = document.querySelector(selector)
-		this._hasRendered = false
+		super(selector)
+
+		this.element.classList.add('view')
 		
 		this.name = name
 		if (!this.name) this.name = selector.replace('#', '')
 
-        this.onNavigate = new EventDispatcher(this)
-
   	}
 
 
-	// ---------------------------------------------------------------
-	// :: RENDER
-	// ---------------------------------------------------------------
-
-	render() {
-        
-        this._hasRendered = true
-
-	}
 
 	// ---------------------------------------------------------------
 	// :: DISPLAY METHODS
@@ -41,26 +30,15 @@ export default class View {
 
   	show() {
 
-        if (!this._hasRendered) this.render()
-		this.element.classList.add('active')
+        super.show()
 		NAVIGATION.setActive(this.name, true)
 
 	}
 
 	hide() {
 
-        this.element.classList.remove('active')
+        super.hide()
 		NAVIGATION.setActive(this.name, false)
-
-	}
-
-	// ---------------------------------------------------------------
-	// :: UTILITIES
-	// ---------------------------------------------------------------
-
-  	isActive() {
-
-        return [...this.element.classList].includes('active')
 
 	}
 

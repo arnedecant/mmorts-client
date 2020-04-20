@@ -1,0 +1,9 @@
+.panel {
+    --margin: 1rem;
+    left: var(--margin);
+    top: var(--margin);
+    width: calc(100% - 2 * var(--margin));
+    height: calc(100% - 2 * var(--margin));
+    border-radius: 0.25rem;
+    background-color: green;
+}

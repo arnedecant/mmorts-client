@@ -11,6 +11,8 @@ export default class Navigation extends Component {
 
         super(selector)
 
+        this.show()
+
         const $buttons = [...this.element.querySelectorAll('a')]
         this.$buttons = {}
 
@@ -22,16 +24,10 @@ export default class Navigation extends Component {
 
     }
 
-    click(e) {
-
-        super.click(e)
-
-    }
-
     setActive(name, active = true) {
 
         if (active) this.$buttons[name].classList.add('active')
-        else  this.$buttons[name].classList.remove('active')
+        else this.$buttons[name].classList.remove('active')
 
     }
 
