@@ -15,6 +15,7 @@ import WorldView from './views/world.js'
 import VillageView from './views/village.js'
 import TroopsView from './views/troops.js'
 import GearView from './views/gear.js'
+import Keyboard from './controls/keyboard.js'
 
 // -------------------------------------------------------------------
 
@@ -34,6 +35,7 @@ class App {
 
 		// create new engine: setup scene, camera & lighting
 
+		window.KEYBOARD = new Keyboard()
 		window.ENGINE = new Engine({ container: this.$container, assetsPath: 'assets/', debug: this.debug })
 		window.GAME = new Game()
 

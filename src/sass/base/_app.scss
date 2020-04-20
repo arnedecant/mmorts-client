@@ -25,6 +25,10 @@ body[data-race="orc"] {
     border-top: 0.25rem solid var(--color-secondary);
 }
 
+.view {
+    overflow: hidden;
+}
+
 .view, .panel, .helper {
     opacity: 0;
     pointer-events: none;

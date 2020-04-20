@@ -6,7 +6,7 @@
 import View from './view.js'
 import EventDispatcher from './../helpers/dispatcher.js'
 
-export default class Panel extends View {
+export default class Panel {
 
 	// ---------------------------------------------------------------
 	// :: CONSTRUCTOR
@@ -23,7 +23,21 @@ export default class Panel extends View {
 		this.events = new Hammer(this.element)
 		this.events.on('tap', this.click.bind(this))
 
-    }
+		KEYBOARD.onKeyUp.addListener(this.keyup.bind(this))
+
+	}
+	
+	
+	
+	// ---------------------------------------------------------------
+	// :: RENDER
+	// ---------------------------------------------------------------
+
+	render() {
+        
+        this._hasRendered = true
+
+	}
 
 
       
@@ -35,7 +49,14 @@ export default class Panel extends View {
 
         if (e.target.name === 'close') this.hide()
 
-    }
+	}
+	
+	keyup(e) {
+
+		if (!this.isActive()) return
+		if (e.key === 'Escape') this.hide()
+
+	}
 
 
 
@@ -47,12 +68,14 @@ export default class Panel extends View {
 
         if (!this._hasRendered) this.render()
 		this.element.classList.add('active')
+		ENGINE.controls.enabled = false
 
 	}
 
 	hide() {
 
-        this.element.classList.remove('active')
+		this.element.classList.remove('active')
+		ENGINE.controls.enabled = true
 
     }
 
@@ -64,7 +87,7 @@ export default class Panel extends View {
 
   	isActive() {
 
-        return this.element.classList.includes('active')
+        return [...this.element.classList].includes('active')
 
 	}
 

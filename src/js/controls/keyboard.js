@@ -5,78 +5,14 @@ export default class Keyboard {
 
 	constructor() {
 
-        this.reset()
-
-        window.addEventListener('keyup', this.keyup.bind(this))
-        window.addEventListener('keydown', this.keydown.bind(this))
-
         this.onKeyUp = new Dispatcher(this)
         this.onKeyDown = new Dispatcher(this)
-        this.onDirection = new Dispatcher(this)
+        this.onKeyPress = new Dispatcher(this)
+
+        window.addEventListener('keyup', (e) => this.onKeyUp.notify(e))
+        window.addEventListener('keydown', (e) => this.onKeyDown.notify(e))
+        window.addEventListener('keypress', (e) => this.onKeyPress.notify(e))
         
-    }
-
-    reset() {
-
-        // this._key = undefined
-        // this._modifier = undefined
-        this._direction = { x: 0, y: 0, z: 0 }
-        this._prevDirection = { ...this._direction }
-
-    }
-
-    keyup(e) {
-
-        const key = this.getKey(e)
-
-        switch (key) {
-
-            case 'up': this._direction.z = 0
-                break
-            case 'down': this._direction.z = 0
-                break
-            case 'right': this._direction.x = 0
-                break
-            case 'left': this._direction.x = 0
-                break
-
-            default: return
-
-        }
-
-        if (isEqual(this._direction, this._prevDirection)) return
-
-        this.onDirection.notify(this._direction)
-
-        this._prevDirection = { ...this._direction }
-
-    }
-    
-    keydown(e) {
-
-        const key = this.getKey(e)
-
-        switch (key) {
-
-            case 'up': this._direction.z = 1
-                break
-            case 'down': this._direction.z = -1
-                break
-            case 'right': this._direction.x = 1
-                break
-            case 'left': this._direction.x = -1
-                break
-
-            default: return
-
-        }
-
-        if (isEqual(this._direction, this._prevDirection)) return
-
-        this.onDirection.notify(this._direction)
-
-        this._prevDirection = { ...this._direction }
-
     }
 
     getKey(e) {
@@ -110,12 +46,6 @@ export default class Keyboard {
             default: return
 
         }
-
-    }
-
-    get direction() {
-
-        return this._direction
 
     }
 	

@@ -3,29 +3,34 @@
 // :: BASE VIEW
 // -------------------------------------------------------------------
 
-import EventDispatcher from './../helpers/dispatcher.js'
+import Dispatcher from './../helpers/dispatcher.js'
 
-export default class View {
+export default class Manager {
 
 	// ---------------------------------------------------------------
 	// :: CONSTRUCTOR
 	// ---------------------------------------------------------------
 
-	constructor(selector, name) {
+	constructor(selector, builing) {
 
 		this.selector = selector
         this.element = document.querySelector(selector)
-		this._hasRendered = false
-		
-		this.name = name
-		if (!this.name) this.name = selector.replace('#', '')
+        this._hasRendered = false
 
-        this.onNavigate = new EventDispatcher(this)
+        // Set dispatchers
 
-  	}
+        this.onClick = new Dispatcher()
+        
+		// Bind events
+
+		this.events = new Hammer(this.element)
+		this.events.on('tap', (e) => this.onClick.notify(e))
+
+    }
 
 
-	// ---------------------------------------------------------------
+
+    // ---------------------------------------------------------------
 	// :: RENDER
 	// ---------------------------------------------------------------
 
@@ -35,6 +40,8 @@ export default class View {
 
 	}
 
+
+
 	// ---------------------------------------------------------------
 	// :: DISPLAY METHODS
 	// ---------------------------------------------------------------
@@ -43,16 +50,16 @@ export default class View {
 
         if (!this._hasRendered) this.render()
 		this.element.classList.add('active')
-		NAVIGATION.setActive(this.name, true)
 
 	}
 
 	hide() {
 
         this.element.classList.remove('active')
-		NAVIGATION.setActive(this.name, false)
 
-	}
+    }
+
+    
 
 	// ---------------------------------------------------------------
 	// :: UTILITIES

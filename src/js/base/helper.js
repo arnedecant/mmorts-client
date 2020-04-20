@@ -72,7 +72,7 @@ export default class Helper {
 
   	isActive() {
 
-        return this.element.classList.includes('active')
+        return [...this.element.classList].includes('active')
 
 	}
 

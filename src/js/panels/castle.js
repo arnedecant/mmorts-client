@@ -7,14 +7,29 @@ import Panel from './../base/panel.js'
 
 export default class CastlePanel extends Panel {
 
+	constructor(selector, options) {
 
-	// ---------------------------------------------------------------
-	// :: RENDER
-	// ---------------------------------------------------------------
+		super(selector)
 
-	render(data) {
+		this.$manager = this.element.querySelector('.building-manager')
 
-		
+	}
+
+	init() {
+
+		this.setup()
+
+	}
+
+	setup() {
+
+		let html = ''
+
+		html = `
+			
+		`
+
+		this.$manager.innerHTML = html
 
 	}
 

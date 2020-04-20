@@ -165,14 +165,16 @@ export default class Engine {
 
 		// add controls
 
-		// this.controls = new THREE.MapControls(this.camera, this.renderer.domElement)
+		this.controls = new THREE.MapControls(this.camera, this.renderer.domElement)
 
-		// this.controls.enableDamping = true // an animation loop is required when either damping or auto-rotation are enabled
-		// this.controls.dampingFactor = 0.05
-		// this.controls.screenSpacePanning = false
-		// this.controls.minDistance = 20
-		// this.controls.maxDistance = 50
-		// this.controls.maxPolarAngle = Math.PI / 2
+		this.controls.enableDamping = true // an animation loop is required when either damping or auto-rotation are enabled
+		this.controls.dampingFactor = 0.05
+		this.controls.screenSpacePanning = false
+		this.controls.minDistance = 20
+		this.controls.maxDistance = 50
+		this.controls.maxPolarAngle = Math.PI / 2
+
+		this.controls.update()
 
 	}
 
